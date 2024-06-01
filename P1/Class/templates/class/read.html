@@ -1,0 +1,34 @@
+{% extends 'layout.html' %}
+{% load humanize %}
+{% block title %}
+  {{ form.title }}
+{% endblock %}
+{% block content %}
+  <a href="{% url 'Class:create' %}">Create Data</a>
+  <table class="table">
+  <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Fees</th>
+        <th scope="col">Teacher</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for data in form.data %}
+        <tr>
+          <th scope="row">{{ forloop.counter }}</th>
+          <td>{{ data.name }}</td>
+          <td>Rp{{ data.fees|intcomma }}</td>
+          <td>{{ data.id_teacher }}</td>
+          <td>
+            <a href="{% url 'Class:read-detail' id=data.id %}">Detail Data</a> |
+            <a href="{% url 'Class:update' id=data.id %}">Update Data</a> |
+            <a href="{% url 'Class:delete' id=data.id %}" onclick="return confirm('Ingin Menghapus?')">Delete Data</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

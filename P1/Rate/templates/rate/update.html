@@ -1,0 +1,35 @@
+{% extends 'layout.html' %}
+{% block title %}
+  {{ form.title }}
+{% endblock %}
+{% block content %}
+  <form action="{% url 'Rate:update' id=form.form.instance.id %}" method="post">
+    {% csrf_token %}
+    <label for="attendance">Attendance:</label><br>
+    <select id="attendance" name="id_attendance" class="form-control" required  >
+      <option selected value="">------</option>
+ 
+      {% for choice in form.attendance %} 
+        {% if form.form.instance.id_attendance.id == choice.id %}
+          <option value="{{ choice.id }}" selected>{{ choice.id }} - {{choice.id_student}} - {{choice.id_schedule.date}}</option>
+        {% else %}
+          <option value="{{ choice.id }}">{{ choice.id }} - {{choice.id_student}} - {{choice.id_schedule.date}}</option>
+        {% endif %}
+      {% endfor %}
+    </select><br>
+    <label for="rate">Rate:</label><br>
+    <select id="rate" name="rate" class="form-control" required  >
+      <option selected value="">------</option>
+ 
+      {% for choice in form.rate %} 
+        {% if form.form.instance.rate == choice.0 %}
+          <option value="{{ choice.0 }}" selected>{{ choice.1 }}</option>
+        {% else %}
+          <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+        {% endif %}
+      {% endfor %}
+    </select><br>
+    
+    <button>Submit</button>
+  </form>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'layout.html' %}
+{% block title %}
+  {{ form.title }}
+{% endblock %}
+{% block content %}
+
+    <label for="schedule">Schedule:</label><br>
+    <select id="schedule" name="id_schedule" class="form-control" required disabled autofocus >
+    <option selected value="">------</option>
+
+    {% for choice in form.schedule %} 
+        {% if form.data.id_schedule.id == choice.id %}
+        <option value="{{ choice.id }}" selected>{{ choice.date }}</option>
+        {% else %}
+        <option value="{{ choice.id }}">{{ choice.date }}</option>
+        {% endif %}
+    {% endfor %}
+    </select><br>
+
+    <label for="student">Student:</label><br>
+    <select id="student" name="id_student" class="form-control" required  disabled>
+      <option selected value="">------</option>
+
+      {% for choice in form.student %} 
+        {% if form.data.id_student.id == choice.id %}
+          <option value="{{ choice.id }}" selected>{{ choice.name }}</option>
+        {% else %}
+          <option value="{{ choice.id }}">{{ choice.name }}</option>
+        {% endif %}
+      {% endfor %}
+    </select><br>
+
+    <label for="status">Status Attendance:</label><br>
+    <select id="status" name="status_attendance" class="form-control" required disabled >
+      <option selected value="">------</option>
+
+      {% for choice in form.status %} 
+        {% if form.data.status_attendance == choice.0 %}
+          <option value="{{ choice.0 }}" selected>{{ choice.1 }}</option>
+        {% else %}
+          <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+        {% endif %}
+      {% endfor %}
+    </select><br>
+
+    <p>Created at {{ form.data.date_created }}</p>
+    <p>Last modify at {{ form.data.date_updated }}</p>
+    <p>last modify by <b>{{ form.data.author }}</b> </p>
+       
+{% endblock %}

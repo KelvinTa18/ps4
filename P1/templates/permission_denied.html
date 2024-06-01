@@ -1,0 +1,16 @@
+{% extends 'layout.html' %}
+{% block title %}
+  {{ form.title }}
+{% endblock %}
+{% block content %}
+  {{form.content}}
+  <br>
+  <form action="{% url 'permission_denied' %}" method='post'>
+    {% csrf_token %}
+    <button>Go Back</button>
+    {% if request.GET.next %}
+      <input type="hidden" name="next" value="{{ request.GET.next }}" />
+    {% endif %}
+  </form> |
+  <a href="{% url 'User:login' %}?next={{ request.GET.next }}">Go to login</a>
+{% endblock %}

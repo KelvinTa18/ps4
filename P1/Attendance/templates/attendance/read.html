@@ -1,0 +1,100 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+  {{ form.title }}
+{% endblock %}
+{% block content %}
+  {% comment %} <a href="{% url 'Attendance:create' %}">Create Data</a> {% endcomment %}
+  <table class="table">
+  <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Schedule</th>
+        <th scope="col">Student</th>
+        <th scope="col">Status Attendance</th>
+        <th scope="col">Action</th>
+        <th scope="col">Rating</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for data in form.data %}
+        <tr>
+          <th scope="row">{{ forloop.counter }}</th>
+          <td>{{ data.id_schedule.date }}</td>
+          <td>{{ data.id_student.name }}</td>
+          
+          {% for choice in form.status %} 
+            {% if data.status_attendance == choice.0 %}
+              <td>{{ choice.1 }}</td>
+            {% endif %}
+          {% endfor %}
+          <td>
+          
+          <a href="{% url 'Attendance:read-detail' id=data.id %}">Detail Data</a> |
+            <a href="{% url 'Attendance:update' id=data.id %}">Update Data</a> |
+            <a href="{% url 'Attendance:delete' id=data.id %}" onclick="return confirm('Ingin Menghapus?')">Delete Data</a>
+          </td>
+       
+          <!-- Modal -->
+          <td>
+            {% if data.id in form.list %}
+              {% for choice in form.rate %}
+                {% if choice.id_attendance_id == data.id %}
+                  {% for choiceRate in form.choiceRate %}
+                    {% if choice.rate == choiceRate.0 %}
+                        {{ choiceRate.1 }}
+                    {% endif %}
+                  {% endfor %}
+                {% endif %}
+              {% endfor %}
+            {% else %}
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop{{data.id}}">
+              Rate Me
+            </button>
+            <div class="modal fade" id="staticBackdrop{{data.id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <form action="{% url 'Rate:create_attendance' %}" method="post">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                      <input type="text" name='id_attendance' value="{{data.id}}" hidden>
+                      <label for="selectRating">rating</label>
+                      <select name="rate" id="selectRating" required>
+                        <option value="">-------</option>
+                        {% for choice in form.choiceRate %}
+                        <option value="{{choice.0}}">{{choice.1}}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button class="btn btn-primary">Submit</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          {% endif %}
+            {% comment %} {% for choice in form.rate %}
+                {% if choice.id_attendance_id == data.id %}
+                    {% for choiceRate in form.choiceRate %}
+                        {% if choice.rate == choiceRate.0 %}
+                            {{ choiceRate.1 }}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endfor %} {% endcomment %}
+
+            
+          </td>
+       
+          
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

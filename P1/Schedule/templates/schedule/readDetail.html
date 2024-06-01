@@ -1,0 +1,30 @@
+{% extends 'layout.html' %}
+{% block title %}
+  {{ form.title }}
+{% endblock %}
+{% block content %}
+    <label for="date">Date Birth:</label>
+    <input type="date" id="date" name="date" class="form-control"  value="{{form.data.date|date:'Y-m-d'}}" required disabled autofocus >
+    <label for="check_in" class="col-sm-12 col-form-label">Check In</label>
+    <input type="time" id="check_in" name="check_in" class="form-control"  value="{{ form.data.check_in|time:'H:i'  }}" required disabled/>
+    <label for="check_out" class="col-sm-12 col-form-label">Check Out</label>
+    <input type="time" id="check_out" name="check_out" class="form-control"  value="{{ form.data.check_out|time:'H:i'  }}"required disabled />
+    <label for="class">Class:</label><br>
+    <select id="class" name="class_id" class="form-control" required disabled  >
+      <option selected value="">------</option>
+ 
+      {% for choice in form.class %} 
+        {% if form.data.class_id.id == choice.id %}
+          <option value="{{ choice.id }}" selected>{{ choice.name }}</option>
+        {% else %}
+          <option value="{{ choice.id }}">{{ choice.name }}</option>
+        {% endif %}
+      {% endfor %}
+    </select><br>
+
+
+    <p>Created at {{ form.data.date_created }}</p>
+    <p>Last modify at {{ form.data.date_updated }}</p>
+    <p>last modify by <b>{{ form.data.author }}</b> </p>
+       
+{% endblock %}

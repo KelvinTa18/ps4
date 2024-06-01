@@ -1,0 +1,62 @@
+{% extends 'layout.html' %}
+{% load humanize %}
+{% block title %}
+  {{ form.title }}
+{% endblock %}
+{% block content %}
+  {% comment %} <a href="{% url 'Schedule:create' %}">Create Data</a> {% endcomment %}
+  <table class="table table-bordered">
+  <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Teacher</th>
+        <th scope="col">Distance</th>
+        <th scope="col">Attendance (%)</th>
+        <th scope="col">Rate</th>
+        <th scope="col">Prediction</th>
+        {% comment %} <th scope="col">Action</th> {% endcomment %}
+      </tr>
+    </thead>
+    <tbody>
+
+      {% for data in form %}
+
+        <tr>
+          <th scope="row">{{ forloop.counter }}</th>
+          <td>{{ data.name}}</td>
+          <td>{{ data.teacher}}</td>
+
+          {% for n in choiceDistance %}
+            {% if n.0 == data.distance %}
+              <td>{{ n.1}}</td>
+            {% endif %}
+          {% endfor %}
+          
+          
+          
+          {% if data.resultML == "please make attendance data" %}
+            <td colspan="3"class="table-danger" style="text-align: center;">{{data.resultML}}</td>
+          {% else  %}   
+            <td>{{ data.persentange_attendance|floatformat:"2" }}%</td>
+            {% if data.resultML == "please make rate data" %}
+              <td colspan="2"class="table-danger" style="text-align: center;">{{data.resultML}}</td>
+            {% else %}
+            {% for n in choiceRate %}
+              {% if n.0 == data.rate %}
+                <td>{{ n.1}} </td>
+              {% endif %}
+            {% endfor %}
+            <td>{{ data.resultML }}</td>
+            {% endif %}
+          {% endif %}
+          {% comment %} <td> {% endcomment %}
+            {% comment %} <a href="{% url 'Schedule:read-detail' id=data.id %}">Detail Data</a> |
+            <a href="{% url 'Schedule:update' id=data.id %}">Update Data</a> |
+            <a href="{% url 'Schedule:delete' id=data.id %}" onclick="return confirm('Ingin Menghapus?')">Delete Data</a> {% endcomment %}
+          {% comment %} </td> {% endcomment %}
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

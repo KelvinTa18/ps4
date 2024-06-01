@@ -1,0 +1,31 @@
+{% extends 'layout.html' %}
+{% block title %}
+  {{ form.title }}
+{% endblock %}
+{% block content %}
+  <form action="{% url 'Teacher:update' id=form.form.instance.id %}" method="post">
+    {% csrf_token %}
+    <label for="name">Name:</label><br>
+    <input type="text" id="name" name="name" class="form-control" required value="{{form.form.instance.name}}" readonly><br>
+    <label for="gender">Gender:</label><br>
+    <select id="gender" name="gender" class="form-control"autofocus required>
+      <option selected value="">------</option>
+      {% for choice in form.gender %}
+        {% if form.form.instance.gender == choice.0 %}
+          <option value="{{ choice.0 }}" selected>{{ choice.1 }}</option>
+        {% else %}
+          <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+        {% endif %}
+      {% endfor %}
+
+    </select><br>
+    <label for="date_birth">Date Birth:</label><br>
+    <input type="date" id="date_birth" name="date_birth" class="form-control" required value="{{form.form.instance.date_birth|date:'Y-m-d' }}"><br>
+    <label for="number_phone">Phone Number:</label><br>
+    <input type="text" id="number_phone" name="number_phone" class="form-control" required value="{{form.form.instance.number_phone}}"><br>
+    <label for="address">Address:</label><br>
+    <textarea type="text" id="address" name="address" row ="3"class="form-control" required>{{form.form.instance.address}}</textarea><br>
+   
+    <button>Submit</button>
+  </form>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'layout.html' %}
+{% block title %}
+  {{ form.title }}
+{% endblock %}
+{% block content %}
+  <a href="{% url 'Student:create' %}">Create Data</a>
+  <table class="table">
+  <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Gender</th>
+        <th scope="col">Date Birth</th>
+        <th scope="col">Age</th>
+        <th scope="col">Number Phone</th>
+        <th scope="col">Address</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for data in form.data %}
+        <tr>
+          <th scope="row">{{ forloop.counter }}</th>
+          <td>{{ data.name }}</td>
+          {% for n in form.gender %}
+            {% if n.0 == data.gender%}
+              <td>{{ n.1 }}</td>
+            {% endif %}
+          {% endfor %}
+          <td>{{ data.date_birth|date:'Y-m-d' }}</td>
+          <td>{{ data.age }}</td>
+          <td>{{ data.number_phone }}</td>
+          <td>{{ data.address }}</td>
+          <td>
+            <a href="{% url 'Student:read-detail' id=data.id %}">Detail Data</a> |
+            <a href="{% url 'Student:update' id=data.id %}">Update Data</a> |
+            <a href="{% url 'Student:delete' id=data.id %}" onclick="return confirm('Ingin Menghapus?')">Delete Data</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

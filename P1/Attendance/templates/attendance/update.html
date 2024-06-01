@@ -1,0 +1,50 @@
+{% extends 'layout.html' %}
+{% block title %}
+  {{ form.title }}
+{% endblock %}
+{% block content %}
+  <form action="{% url 'Attendance:update' id=form.form.instance.id %}" method="post">
+    {% csrf_token %}
+    <label for="schedule">Schedule:</label><br>
+    <select id="schedule" name="id_schedule" class="form-control" required  autofocus >
+    <option selected value="">------</option>
+    
+    {% for choice in form.schedule %} 
+        {% if form.form.instance.id_schedule.id == choice.id %}
+        <option value="{{ choice.id }}" selected>{{ choice.date }}</option>
+        {% else %}
+        <option value="{{ choice.id }}">{{ choice.date }}</option>
+        {% endif %}
+    {% endfor %}
+    </select><br>
+    
+    <label for="student">Student:</label><br>
+    <select id="student" name="id_student" class="form-control" required  >
+      <option selected value="">------</option>
+ 
+      {% for choice in form.student %} 
+        {% if form.form.instance.id_student.id == choice.id %}
+          <option value="{{ choice.id }}" selected>{{ choice.name }}</option>
+        {% else %}
+          <option value="{{ choice.id }}">{{ choice.name }}</option>
+        {% endif %}
+      {% endfor %}
+    </select><br>
+
+    <label for="status">Status Attendance:</label><br>
+    <select id="status" name="status_attendance" class="form-control" required  >
+      <option selected value="">------</option>
+ 
+      {% for choice in form.status %} 
+        {% if form.form.instance.status_attendance == choice.0 %}
+          <option value="{{ choice.0 }}" selected>{{ choice.1 }}</option>
+        {% else %}
+          <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+        {% endif %}
+      {% endfor %}
+    </select><br>
+    
+    
+    <button>Submit</button>
+  </form>
+{% endblock %}

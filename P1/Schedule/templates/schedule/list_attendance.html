@@ -1,0 +1,44 @@
+{% extends 'layout.html' %}
+{% block title %}
+  {{ form.title }}
+{% endblock %}
+{% block content %}
+<form action="{% url 'Schedule:list_attendance' id=form.form.instance.id %}" method="post">
+    {% csrf_token %}
+        <label for="date">Date Birth:</label>
+        <input type="date" id="date" name="date" class="form-control"  value="{{form.form.instance.date|date:'Y-m-d'}}" required disabled autofocus >
+        <label for="check_in" class="col-sm-12 col-form-label">Check In</label>
+        <input type="time" id="check_in" name="check_in" class="form-control"  value="{{ form.form.instance.check_in|time:'H:i'  }}" required disabled/>
+        <label for="check_out" class="col-sm-12 col-form-label">Check Out</label>
+        <input type="time" id="check_out" name="check_out" class="form-control"  value="{{ form.form.instance.check_out|time:'H:i'  }}"required disabled />
+        <label for="class">Class:</label><br>
+        <select id="class" name="class_id" class="form-control" required disabled  >
+        <option selected value="">------</option>
+    
+        {% for choice in form.class %} 
+            {% if form.form.instance.class_id.id == choice.id %}
+            <option value="{{ choice.id }}" selected>{{ choice.name }}</option>
+            {% else %}
+            <option value="{{ choice.id }}">{{ choice.name }}</option>
+            {% endif %}
+        {% endfor %}
+        </select><br>
+        <div class="highlight">
+            {% for data in form.student_with_class %}
+            <div class="input-group">
+                <input type="text" class="form-control" value="{{data.id_student.name}}">
+                {% if  data.status_attendance == 1 %}
+                <input name="checkPresent" type="checkbox" class="btn-check" id="btn-check-2-outlined-{{data.id_student.name}}" value="{{data.id}}"autocomplete="off" checked>
+                {% else %}
+                <input name="checkPresent" type="checkbox" class="btn-check" id="btn-check-2-outlined-{{data.id_student.name}}" value="{{data.id}}"autocomplete="off">
+                {% endif %}
+                <label class="btn btn-outline-success" for="btn-check-2-outlined-{{data.id_student.name}}">Present</label><br>
+            </div>
+            {% endfor %}
+        </div>
+        <p>Created at {{ form.data.date_created }}</p>
+        <p>Last modify at {{ form.data.date_updated }}</p>
+        <p>last modify by <b>{{ form.data.author }}</b> </p>
+    <button>submit</button>
+</form>
+{% endblock %}

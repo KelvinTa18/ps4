@@ -1,0 +1,36 @@
+{% extends 'layout.html' %}
+{% block title %}
+  {{ form.title }}
+{% endblock %}
+{% block content %}
+  <table class="table">
+  <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Attendance</th>
+        <th scope="col">Name Student</th>
+        <th scope="col">Rate</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for data in form.data %}
+        <tr>
+          <th scope="row">{{ forloop.counter }}</th>
+          <td>{{ data.id_attendance.id_schedule.date }}</td>
+          <td>{{ data.id_attendance.id_student.name }}</td>
+          {% for choice in form.rate %} 
+            {% if data.rate == choice.0 %}
+              <td>{{ choice.1 }}</td>
+            {% endif %}
+          {% endfor %}
+          <td>
+            <a href="{% url 'Rate:read-detail' id=data.id %}">Detail Data</a> |
+            <a href="{% url 'Rate:update' id=data.id %}">Update Data</a> |
+            <a href="{% url 'Rate:delete' id=data.id %}" onclick="return confirm('Ingin Menghapus?')">Delete Data</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

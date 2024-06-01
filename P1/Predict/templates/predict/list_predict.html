@@ -1,0 +1,24 @@
+{% extends 'layout.html' %}
+{% block title %}
+  {{ form.title }}
+{% endblock %}
+{% block content %}
+<h1>Select Student to make Prediction</h1>
+<form action="{% url 'Predict:choose'%}" method="post">
+    {% csrf_token %}
+    <div class="highlight">
+        {% for data in form.student %}
+        <div class="input-group">
+            <input type="text" class="form-control" value="{{data.name}}">
+            <input name="checkPresent" type="checkbox" class="btn-check" id="btn-check-2-outlined-{{data.id}}" value="{{data.id}}"autocomplete="off">
+            <label class="btn btn-outline-success" for="btn-check-2-outlined-{{data.id}}">Present</label><br>
+        </div>
+        {% endfor %}
+    </div>
+    <button>submit</button>
+
+</form>
+
+<p>Created at {% now "Y-m-d H:i:s" %}</p>
+<p>Created by <b>{{ request.user }}</b> </p>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'layout.html' %}
+{% block title %}
+  {{ form.title }}
+{% endblock %}
+{% block content %}
+  <a href="{% url 'Schedule:create' %}">Create Data</a>
+  <table class="table">
+  <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Class</th>
+        <th scope="col">Date</th>
+        <th scope="col">Check In</th>
+        <th scope="col">Check Out</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for data in form.data %}
+        <tr>
+          <th scope="row">{{ forloop.counter }}</th>
+          <td>{{ data.class_id.name }}</td>
+          <td>{{ data.date|date:'Y-m-d' }}</td>
+          <td>{{ data.check_in|time:'H:i' }}</td>
+          <td>{{ data.check_out|time:'H:i' }}</td>
+          <td>
+            <a href="{% url 'Schedule:list_attendance' id=data.id %}">Attendance</a> |
+            <a href="{% url 'Schedule:read-detail' id=data.id %}">Detail Data</a> |
+            <a href="{% url 'Schedule:update' id=data.id %}">Update Data</a> |
+            <a href="{% url 'Schedule:delete' id=data.id %}" onclick="return confirm('Ingin Menghapus?')">Delete Data</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

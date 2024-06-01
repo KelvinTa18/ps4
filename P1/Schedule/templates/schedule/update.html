@@ -1,0 +1,30 @@
+{% extends 'layout.html' %}
+{% block title %}
+  {{ form.title }}
+{% endblock %}
+{% block content %}
+  <form action="{% url 'Schedule:update' id=form.form.instance.id %}" method="post">
+    {% csrf_token %}
+    <label for="date">Date Birth:</label><br>
+    <input type="date" id="date" name="date" class="form-control"  value="{{form.form.instance.date|date:'Y-m-d'}}" required autofocus ><br>
+    <label for="check_in" class="col-sm-12 col-form-label">Check In</label>
+    <input type="time" id="check_in" name="check_in" class="form-control"  value="{{ form.form.instance.check_in|time:'H:i'  }}" required/>
+    <label for="check_out" class="col-sm-12 col-form-label">Check Out</label>
+    <input type="time" id="check_out" name="check_out" class="form-control"  value="{{ form.form.instance.check_out|time:'H:i'  }}"required />
+    <label for="class">Class:</label><br>
+    <select id="class" name="class_id" class="form-control" required  >
+      <option selected value="">------</option>
+ 
+      {% for choice in form.class %} 
+        {% if form.form.instance.class_id.id == choice.id %}
+          <option value="{{ choice.id }}" selected>{{ choice.name }}</option>
+        {% else %}
+          <option value="{{ choice.id }}">{{ choice.name }}</option>
+        {% endif %}
+      {% endfor %}
+    </select><br>
+
+    
+    <button>Submit</button>
+  </form>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+{% block title %}
+  {{ form.title }}
+{% endblock %}
+{% block content %}
+  <form action="{% url 'Class:update' id=form.form.instance.id %}" method="post">
+    {% csrf_token %}
+    <label for="name">Name:</label><br>
+    <input type="text" id="name" name="name" class="form-control" required value="{{form.form.instance.name}}" autofocus><br>
+
+    <label for="fees">Fees:</label><br>
+    <input type="text" pattern="[0-9]*" title="Harus digit angka" id="fees" name="fees" class="form-control" required value="{{form.form.instance.fees}}"><br>
+    <label for="teacher">Teacher:</label><br>
+    <select id="teacher" name="id_teacher" class="form-control" required>
+      <option selected value="">------</option>
+      {% for choice in form.teacher %}
+        {% if choice.id == form.form.instance.id_teacher.id %}
+          <option value="{{ choice.id }}" selected>{{choice.id}}--{{ choice.name }}</option>
+        {% else %}
+          <option value="{{ choice.id }}" >{{choice.id}}--{{ choice.name }}</option>
+        {% endif %}
+      {% endfor %}
+    </select><br>
+    <button>Submit</button>
+  </form>
+{% endblock %}
